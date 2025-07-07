@@ -1,0 +1,261 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+.header {
+    background-color: #f9f0ff;
+    color: #9c27b0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    padding: 1.2rem;
+}
+
+.header-izquierda {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo {
+    width: 75px;
+    height: 75px;
+    margin-left: 1rem;
+}
+
+.titulo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #9c27b0;
+}
+
+.main {
+    background-color: #c296fa91;;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.dashboard {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1.5rem;
+    margin: 2rem auto;
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.dashboard2{
+    height: 200px;
+    width: 500px;
+    margin: auto;
+    margin-top: 100px;
+    background-color: #9c27b0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.contenido-dashboard {
+    color: #343a40;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.texto-icono {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #6c757d;
+}
+
+.texto-icono img {
+    width: 24px;
+    height: 24px;
+}
+
+.texto-icono a {
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.texto-icono a:hover {
+    text-decoration: underline;
+}
+
+.botones-panel {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.boton-icono img {
+    width: 20px;
+    height: 20px;
+}
+
+.cerrar-sesion a {
+    color: white !important;
+    text-decoration: none;
+}
+
+.cerrar-sesion a:hover {
+    text-decoration: underline;
+}
+
+.boton-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #9c27b0;
+    color: #fff !important;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    text-decoration: none !important;
+}
+
+.boton-icono:hover,
+.boton-icono:focus {
+    background-color: #7b1fa2;
+    color: #fff !important;
+    text-decoration: none !important;
+    box-shadow: 0 0 0 0.2rem rgba(156, 39, 176, 0.5);
+}
+
+#mostrarusuarios {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1rem;
+}
+
+.card {
+    margin-bottom: 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: #fff;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.table td, .table th {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table img {
+    cursor: pointer;
+}
+
+.table img:hover {
+    opacity: 0.8;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.table td img {
+    margin: 0 3px;
+}
+
+/* Estilos específicos para la tabla de propietarios */
+.table td:nth-child(3) {  /* Fecha */
+    white-space: nowrap;
+}
+
+.table td:nth-child(4) {  /* Correo */
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table td:nth-child(6) {  /* Teléfono */
+    white-space: nowrap;
+}
+
+/* Estilos para las acciones */
+.table td:last-child {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table td:last-child img {
+    transition: opacity 0.3s;
+}
+
+.table td:last-child img:hover {
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table-responsive {
+        margin: 0 -15px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.5rem;
+    }
+}

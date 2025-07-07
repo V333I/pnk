@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Gestor Free</title>
+    <link rel="stylesheet" href="css/registro.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-izquierda">
+            <img src="img/Logo.png?v=1" alt="Logo PNK" class="logo">
+            <div class="titulo">PNK INMOBILIARIA</div>
+        </div>
+    </header>  
+    <div class="registro-forma">
+        <h2>Registro de Gestor Inmobiliario Free</h2>
+        <form id="formGestor" action="procesar_gestor.php" method="post" onsubmit="return validarFormulario(event)">
+            <div class="input-group">
+                <label for="rut">RUN:</label>
+                <input type="text" name="rut" id="rut" placeholder="12345678-9">
+            </div>
+            <div class="input-group">
+                <label for="nombre_completo">Nombre Completo:</label>
+                <input type="text" name="nombre_completo" id="nombre_completo">
+            </div>
+            <div class="input-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" max="">
+            </div>
+            <div class="input-group">
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" name="correo" id="correo">
+            </div>
+            <div class="input-group">
+                <label for="password">Ingrese Contraseña:</label>
+                <input type="password" name="password" id="password">
+                <small>Mínimo 8 caracteres, una mayúscula, una minúscula y un carácter especial</small>
+            </div>
+            <div class="input-group">
+                <label for="password2">Ingrese Contraseña Nuevamente:</label>
+                <input type="password" name="password2" id="password2">
+            </div>
+            <div class="input-group">
+                <label for="sexo">Ingrese Sexo:</label>
+                <select name="sexo" id="sexo">
+                    <option value="">Seleccione...</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono" placeholder="+56912345678">
+            </div>
+            <div class="input-group">
+                <label for="certificado">Certificado de Antecedentes:</label>
+                <input type="file" name="certificado" id="certificado" accept=".pdf,.jpg,.jpeg,.png">
+                <small>Formatos permitidos: PDF, JPG, JPEG, PNG</small>
+            </div>
+            <button type="submit">Registrarse</button>
+        </form>
+        <div class="button">
+            <a href="index.php">Volver</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-izquierda">
+            <img src="img/Logo.png?v=1" alt="Logo PNK" class="logo-footer">
+            <div class="titulo-footer">PNK INMOBILIARIA</div>
+        </div>
+
+        <nav class="footer-centro">
+            <a href="registro_propietario.html" class="enlace-footer">Registro Propietario</a>
+            <a href="registro_gestor.html" class="enlace-footer">Registro Gestor</a>
+        </nav>
+
+        <nav class="footer-derecha">
+            <a href="https://www.instagram.com/tioreneoficial_/?hl=es" target="_blank">
+                <img src="img/logo-insta.png?v=1" alt="Logo instagram" class="logo-footer">
+            </a>
+            <a href="https://www.ticketmaster.cl/event/popin-un-show-muy-penca-centro-cultural-san-gines" target="_blank">
+                <img src="img/linkedin.png?v=1" alt="Logo Linkedin" class="logo-footer">
+            </a>
+        </nav>
+    </footer>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    
+    <script>
+        // Función para validar RUT chileno
+        function validarRut(rut) {
+            if (!/^[0-9]+-[0-9kK]{1}$/.test(rut)) return false;
+            var tmp = rut.split('-');
+            var digv = tmp[1].toLowerCase();
+            var rut = tmp[0];
+            if (digv == 'k') digv = 'k';
+            return (dv(rut) == digv);
+        }
+
+        function dv(T) {
+            var M = 0, S = 1;
+            for (; T; T = Math.floor(T/10))
+                S = (S + T % 10 * (9 - M++ % 6)) % 11;
+            return S ? S - 1 : 'k';
+        }
+
+        // Función para validar contraseña
+        function validarPassword(password) {
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+            return regex.test(password);
+        }
+
+        // Función para validar email
+        function validarEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Función para validar teléfono
+        function validarTelefono(telefono) {
+            const regex = /^\+569\d{8}$/;
+            return regex.test(telefono);
+        }
+
+        // Función para validar fecha de nacimiento
+        function validarFechaNacimiento(fecha) {
+            const fechaSeleccionada = new Date(fecha);
+            const hoy = new Date();
+            return fechaSeleccionada <= hoy;
+        }
+
+        // Establecer la fecha máxima como hoy
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaInput = document.getElementById('fecha_nacimiento');
+            const hoy = new Date();
+            const formatoFecha = hoy.toISOString().split('T')[0];
+            fechaInput.max = formatoFecha;
+        });
+
+        // Función principal de validación
+        function validarFormulario(event) {
+            event.preventDefault();
+            
+            const rut = document.getElementById('rut').value;
+            const nombre_completo = document.getElementById('nombre_completo').value;
+            const fecha_nacimiento = document.getElementById('fecha_nacimiento').value;
+            const correo = document.getElementById('correo').value;
+            const password = document.getElementById('password').value;
+            const password2 = document.getElementById('password2').value;
+            const sexo = document.getElementById('sexo').value;
+            const telefono = document.getElementById('telefono').value;
+            const certificado = document.getElementById('certificado').value;
+
+            // Validar campos vacíos
+            if (!rut || !nombre_completo || !fecha_nacimiento || !correo || !password || !password2 || !sexo || !telefono || !certificado) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Todos los campos son obligatorios'
+                });
+                return false;
+            }
+
+            // Validar RUT
+            if (!validarRut(rut)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El RUT ingresado no es válido'
+                });
+                return false;
+            }
+
+            // Validar fecha de nacimiento
+            if (!validarFechaNacimiento(fecha_nacimiento)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La fecha de nacimiento no puede ser una fecha futura'
+                });
+                return false;
+            }
+
+            // Validar email
+            if (!validarEmail(correo)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El correo electrónico no es válido'
+                });
+                return false;
+            }
+
+            // Validar contraseña
+            if (!validarPassword(password)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un carácter especial'
+                });
+                return false;
+            }
+
+            // Validar que las contraseñas coincidan
+            if (password !== password2) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Las contraseñas no coinciden'
+                });
+                return false;
+            }
+
+            // Validar teléfono
+            if (!validarTelefono(telefono)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El teléfono debe tener el formato +569XXXXXXXX'
+                });
+                return false;
+            }
+
+            // Validar extensión del certificado
+            const extensionesPermitidas = ['pdf', 'jpg', 'jpeg', 'png'];
+            const extension = certificado.split('.').pop().toLowerCase();
+            if (!extensionesPermitidas.includes(extension)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El certificado debe ser un archivo PDF, JPG, JPEG o PNG'
+                });
+                return false;
+            }
+
+            // Si todo está correcto, enviar el formulario
+            const formData = new FormData(document.getElementById('formGestor'));
+            
+            fetch('procesar_gestor.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: data.message,
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.php';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al procesar la solicitud'
+                });
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>

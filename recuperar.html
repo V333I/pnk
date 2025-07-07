@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="css/recuperar.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-izquierda">
+            <img src="img/Logo.png?v=1" alt="Logo PNK" class="logo">
+            <div class="titulo">PNK INMOBILIARIA</div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="recuperar-contenedor">
+            <h2>Recuperar Contraseña</h2>
+            <div id="mensaje" class="mensaje" style="display: none;"></div>
+            <form id="formRecuperar" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="correo">Correo Electrónico:</label>
+                    <input type="email" name="correo" id="correo" required>
+                </div>                
+            
+                <button type="submit" onclick="iniciarRecuperacion()">Recuperar</button>
+                <button type="button" onclick="window.location.href='index.php'">Volver</button>
+            </form>            
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-izquierda">
+            <img src="img/Logo.png?v=1" alt="Logo PNK" class="logo-footer">
+            <div class="titulo-footer">PNK INMOBILIARIA</div>
+        </div>
+
+        <nav class="footer-centro">
+            <a href="registro_propietario.html" class="enlace-footer">Registro Propietario</a>
+            <a href="registro_gestor.html" class="enlace-footer">Registro Gestor</a>
+        </nav>
+
+        <nav class="footer-derecha">
+            <a href="https://www.instagram.com/tioreneoficial_/?hl=es" target="_blank">
+                <img src="img/logo-insta.png?v=1" alt="Logo instagram" class="logo-footer">
+            </a>
+            <a href="https://www.ticketmaster.cl/event/popin-un-show-muy-penca-centro-cultural-san-gines" target="_blank">
+                <img src="img/linkedin.png?v=1" alt="Logo Linkedin" class="logo-footer">
+            </a>
+        </nav>
+    </footer>
+
+    <script>
+        function iniciarRecuperacion() {
+            const correo = document.getElementById('correo').value;
+            
+            if (!correo) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Por favor, ingrese su correo electrónico'
+                });
+                return;
+            }
+
+            // Mostrar el contador
+            Swal.fire({
+                title: 'Procesando solicitud',
+                html: `
+                    <div class="contador">
+                        <p>Tiene 2 minutos para validar correo electronico</p>
+                        <h2 id="contador">2:00</h2>
+                    </div>
+                `,
+                showCancelButton: true,
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                timer: 120000, // 2 minutos en milisegundos
+                timerProgressBar: true,
+                didOpen: () => {
+                    let tiempo = 120; // 2 minutos en segundos
+                    const contador = document.getElementById('contador');
+                    
+                    const intervalo = setInterval(() => {
+                        tiempo--;
+                        const minutos = Math.floor(tiempo / 60);
+                        const segundos = tiempo % 60;
+                        contador.textContent = `${minutos}:${segundos.toString().padStart(2, '0')}`;
+                        
+                        if (tiempo <= 0) {
+                            clearInterval(intervalo);
+                        }
+                    }, 1000);
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Usuario aceptó
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: 'Se ha enviado un correo con instrucciones para recuperar tu contraseña',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = 'index.php';
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Usuario canceló
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Cancelado',
+                        text: 'La operación ha sido cancelada',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = 'index.php';
+                    });
+                } else {
+                    // Tiempo expirado
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tiempo expirado',
+                        text: 'El tiempo para procesar la solicitud ha expirado',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = 'index.php';
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

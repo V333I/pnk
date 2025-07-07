@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="img/dash.png">
+</head>
+<body>
+    <header class="header">
+        <div class="header-izquierda">
+            <img src="img/Logo.png?v=1" alt="Logo PNK" class="logo">
+            <div class="titulo">PNK INMOBILIARIA</div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="dashboard">
+            <div class="contenido-dashboard">
+                <div class="texto-icono">
+                    <img src="img/dash.png?v=1" alt="Dashboard">
+                    <span>Bienvenido PNK Usuario
+                    </span>
+                </div>
+                <div class="texto-icono">
+                    <img src="img/exit.png?v=1" alt="Cerrar sesión">
+                    <a href="index.php">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+        <div class="botones-panel">
+            <a href= "mantenedor-u.html" class="boton-icono">
+                <img src="img/usuario.png?v=1" alt="Usuarios">
+                <span>Mantenedor Usuarios</span>
+            </a>
+            <a href="mantenedor-p.html" class="boton-icono">
+                <img src="img/iccasa.png?v=1" alt="Propiedades">
+                <span>Mantenedor Propiedades</span>
+            </a>
+        </div>
+        <div class="registro-forma">
+            <h2>Avanzar Clase</h2>
+            <form id="formClase" action="procesar_clase.php" method="post" onsubmit="return validarFormularioClase(event)">
+                <div class="input-group">
+                    <label for="run">RUN:</label>
+                    <input type="text" name="run" id="run" placeholder="12345678-9">
+                </div>
+                <div class="input-group">
+                    <label for="clase">Clase:</label>
+                    <input type="text" name="clase" id="clase">
+                </div>
+                <div class="input-group">
+                    <label for="fecha_avance">Fecha de Avance:</label>
+                    <input type="date" name="fecha_avance" id="fecha_avance" max="">
+                </div>
+                <button type="submit">Avanzar Clase</button>  
+            </form>
+        </div>
+    </main>
+    <script>
+        // Función para validar RUT chileno
+        function validarRut(rut) {
+            if (!/^[0-9]+-[0-9kK]{1}$/.test(rut)) return false;
+            var tmp = rut.split('-');
+            var digv = tmp[1].toLowerCase();
+            var rut = tmp[0];
+            if (digv == 'k') digv = 'k';
+            return (dv(rut) == digv);
+        }
+
+        function dv(T) {
+            var M = 0, S = 1;
+            for (; T; T = Math.floor(T/10))
+                S = (S + T % 10 * (9 - M++ % 6)) % 11;
+            return S ? S - 1 : 'k';
+        }
+
+        // Función para validar fecha de avance
+        function validarFechaAvance(fecha) {
+            const fechaSeleccionada = new Date(fecha);
+            const hoy = new Date();
+            return fechaSeleccionada <= hoy;
+        }
+
+        // Establecer la fecha máxima como hoy
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaInput = document.getElementById('fecha_avance');
+            const hoy = new Date();
+            const formatoFecha = hoy.toISOString().split('T')[0];
+            fechaInput.max = formatoFecha;
+        });
+
+        // Función principal de validación
+        function validarFormularioClase(event) {
+            event.preventDefault();
+            
+            const run = document.getElementById('run').value;
+            const clase = document.getElementById('clase').value;
+            const fecha_avance = document.getElementById('fecha_avance').value;
+
+            // Validar campos vacíos
+            if (!run || !clase || !fecha_avance) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Todos los campos son obligatorios'
+                });
+                return false;
+            }
+
+            // Validar RUT
+            if (!validarRut(run)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El RUT ingresado no es válido'
+                });
+                return false;
+            }
+
+            // Validar fecha de avance
+            if (!validarFechaAvance(fecha_avance)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La fecha de avance no puede ser una fecha futura'
+                });
+                return false;
+            }
+
+            // Si todo está correcto, enviar el formulario
+            const formData = new FormData(document.getElementById('formClase'));
+            
+            fetch('procesar_clase.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al procesar la solicitud'
+                });
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>
